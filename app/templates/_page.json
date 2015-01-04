@@ -1,0 +1,6 @@
+{
+    "<%= pageType %>-demo":"./src/js/<%= pageType %>-demo.jsx"
+
+}
+
+
