@@ -3,40 +3,28 @@ var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
 var path = require('path');
+var jsonfile=require('jsonfile');
 
-module.exports = yeoman.generators.Base.extend({
+     
+module.exports=yeoman.generators.Base.extend({
     initializing: function () {
         this.pkg = require('../package.json');
         this.env.options.appPath = "src";
-
+        
         var sourceRoot = '../templates';
         this.sourceRoot(path.join(__dirname, sourceRoot));
      
+        
     },
 
     prompting: function () {
         var done = this.async();
 
-        // Have Yeoman greet the user.
-        this.log(yosay(
-            'Welcome to ' + chalk.red('Rakuten Yo') + ' F2E project generator!'
-        ));
-
         //Teamsite User Name  
         var prompts = [{
             type: 'input',
-            name: 'projectname',
-            message: 'Please input Project Name:(this name will be used for naming your css/js file)',
-            default: ""
-    }, {
-            type: 'input',
-            name: 'username',
-            message: 'Please input your Teamsite user name:',
-            default: ""
-    }, {
-            type: 'input',
-            name: 'password',
-            message: 'Please input your Teamsite password:',
+            name: 'pagename',
+            message: 'Please input Page Name:(this name will be used for naming your css/js file)',
             default: ""
     }, {
             type: 'list',
@@ -103,11 +91,9 @@ module.exports = yeoman.generators.Base.extend({
 
         this.prompt(prompts, function (props) {
 
-            this.projectname = props.projectname;
-            this.username = props.username;
-            this.password = props.password;
+            this.pagename = props.pagename;
             this.pageType = props.pageType;
-            this.filename = this.pageType + "_" + this.projectname;
+            this.filename = this.pageType + "_" + this.pagename;
 
 
             done();
@@ -117,40 +103,48 @@ module.exports = yeoman.generators.Base.extend({
 
 
     },
-
-    writing: {
+        writing: {
         app: function () {
-            this.fs.copy(
-                this.templatePath('_package.json'),
-                this.destinationPath('package.json')
-            );
-            this.fs.copy(
-                this.templatePath('_gulpfile.js'),
-                this.destinationPath('gulpfile.js')
-            );
-            this.fs.copy(
-                this.templatePath('_webpack.config.js'),
-                this.destinationPath('webpack.config.js')
-            );
+//            this.fs.copy(
+//                this.templatePath('_package.json'),
+//                this.destinationPath('package.json')
+//            );
+//            this.fs.copy(
+//                this.templatePath('_gulpfile.js'),
+//                this.destinationPath('gulpfile.js')
+//            );
+//            this.fs.copy(
+//                this.templatePath('_webpack.config.js'),
+//                this.destinationPath('webpack.config.js')
+//            );
         },
         setupEnv: function () {
-            this.mkdir(this.env.options.appPath);
-            this.mkdir(this.env.options.appPath + '/js');
-            this.mkdir(this.env.options.appPath + '/js/constants');
-            this.mkdir(this.env.options.appPath + '/js/actions');
-            this.mkdir(this.env.options.appPath + '/js/components');
-            this.mkdir(this.env.options.appPath + '/js/mixins');
-            this.mkdir(this.env.options.appPath + '/js/stores');
-            this.mkdir(this.env.options.appPath + '/css');
-            this.mkdir(this.env.options.appPath + '/img');
-            this.mkdir('command');
             
-            this.template('_launch.js', 'command/launch.js');            
-            this.template('_teamsite.config.json', 'teamsite.config.json');
-            this.template('_page.json', 'page.json');
+            var filename=this.filename;
+            
+            
             this.template('_index.scss', this.env.options.appPath + '/css/' + this.filename + '.scss');
             this.template('_index.jsx', this.env.options.appPath + '/js/' + this.filename + '.jsx');
             this.template('pagetype/' + this.pageType + '.html', this.env.options.appPath + '/' + this.filename + '.html');
+            
+             //update page.json
+            var pageJson = './page.json';
+            jsonfile.readFile(pageJson, function(err, obj) {
+                
+                //update
+                obj[filename]='./src/js/'+filename+'.jsx';
+                console.log("update page.json for webpack");
+                console.log(obj);
+                //write page.json
+                jsonfile.writeFile(pageJson, obj, function(err) {
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log("page.json updated");
+                    }
+                })
+                
+            });
 
 
 
@@ -158,18 +152,18 @@ module.exports = yeoman.generators.Base.extend({
 
         },
         projectfiles: function () {
-            this.fs.copy(
-                this.templatePath('editorconfig'),
-                this.destinationPath('.editorconfig')
-            );
-            this.fs.copy(
-                this.templatePath('jshintrc'),
-                this.destinationPath('.jshintrc')
-            );
-            this.fs.copy(
-                this.templatePath('gitignore'),
-                this.destinationPath('.gitignore')
-            );
+//            this.fs.copy(
+//                this.templatePath('editorconfig'),
+//                this.destinationPath('.editorconfig')
+//            );
+//            this.fs.copy(
+//                this.templatePath('jshintrc'),
+//                this.destinationPath('.jshintrc')
+//            );
+//            this.fs.copy(
+//                this.templatePath('gitignore'),
+//                this.destinationPath('.gitignore')
+//            );
 
         }
 
@@ -177,8 +171,9 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     install: function () {
-        this.installDependencies({
-            skipInstall: this.options['skip-install']
-        });
+//        this.installDependencies({
+//            skipInstall: this.options['skip-install']
+//        });
     }
+    
 });

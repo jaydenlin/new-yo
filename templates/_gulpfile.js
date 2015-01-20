@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var imageop = require('gulp-image-optimization');
 var del = require('del');
 
 
@@ -16,7 +15,7 @@ gulp.task('default',function() {
 // =====================================
 
 
-gulp.task('build', ['copy','imgaemin'], function() {});
+gulp.task('build', ['copy'], function() {});
 
 
 // Clean

@@ -1,0 +1,52 @@
+{
+    "remoteRoot": "all02/WORKAREA/00-PUBLIC/htdocs",
+    "localRoot": "dist",
+    "profile": {
+        "name": "<%= username %>",
+        "password": "<%= password %>"
+    },
+    "stage": {
+        "path": {
+            "html": [
+                    [
+                        "html", "page/<%= pageType %>/<%= projectname %>"
+                    ]
+                ],
+            "js": [
+                    [
+                        "js", "js/<%= pageType %>/<%= projectname %>"
+                    ],
+                    [
+                        "js/m", "js/<%= pageType %>/<%= projectname %>/m"
+                    ]
+                ],
+            "img": [
+
+                    [
+                        "img", "image/<%= pageType %>/<%= projectname %>"
+
+                    ],
+                    [
+                        "img/m", "image/<%= pageType %>/<%= projectname %>/m"
+                    ]
+                ],
+            "css": [
+                    [
+                        "css", "css/<%= pageType %>/<%= projectname %>"
+                    ],
+                    [
+                        "css/m", "css/<%= pageType %>/<%= projectname %>/m"
+                    ]
+                ]
+        }
+    },
+    "production": {},
+    "allowedExt": {
+        "html": ".html",
+        "js": ".js",
+        "img": "{*.gif,*.jpg,*.png}",
+        "css": ".css"
+
+    }
+
+}

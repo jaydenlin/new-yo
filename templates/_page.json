@@ -1,0 +1,5 @@
+{
+    "<%= filename %>":"./src/js/<%= filename %>.jsx"
+}
+
+
